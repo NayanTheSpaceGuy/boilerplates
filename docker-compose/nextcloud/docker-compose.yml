@@ -1,3 +1,4 @@
+---
 version: '3'
 
 # Set external to false if the following networks don't exist yet.
@@ -15,6 +16,7 @@ volumes:
 services:
   nextcloud-app:
     image: nextcloud:latest
+    container_name: nextcloud-app
     restart: unless-stopped
     # Change port accordingly.
     ports:
@@ -22,7 +24,7 @@ services:
     # Leave unchanged for local volumes. 
     # To set external volume replace 'nextcloud-data' with desired dir.
     volumes:
-      - nextcloud-data:/var/www/
+      - nextcloud-data:/var/www/html
     # Replace these accordingly. Make sure it is same for both services.
     environment:
       - MYSQL_PASSWORD=$MYSQL_PASSWORD
@@ -34,10 +36,11 @@ services:
       - nextcloud-backend
   nextcloud-db:
     image: mariadb:latest
+    container_name: nextcloud-db
     restart: unless-stopped
     command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
     # Leave unchanged for local volumes. 
-    # To set external volume replace 'nextcloud-data' with desired dir.
+    # To set external volume replace 'nextcloud-db' with desired dir.
     volumes:
       - nextcloud-db:/var/lib/mysql
     # Replace these accordingly. Make sure it is same for both services.
